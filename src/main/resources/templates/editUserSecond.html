@@ -1,0 +1,69 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>edit user</title>
+</head>
+<body>
+
+<form th:method="PATCH" th:action="@{/user/{id}(id = ${user.getId()})}" th:object="${user}" >
+
+    <label for="email">Edit email: </label>
+    <input type="text" th:field="*{email}" id="email" th:value="*{email}"/><br/>
+    <p style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Error</p><br/>
+    <p style="color: #ff0000" th:if="${errorExist}" th:text="${errorExist}">Error</p><br/>
+    <!--    <div style="color: red" th:if="${errorNameEmpty}" th:text="${errorNameEmpty}">Error</div><br/>-->
+
+    <label for="name">Edit name: </label>
+    <input type="text" th:field="*{name}" id="name" th:value="*{name}"/><br/>
+    <p style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Error</p><br/>
+
+    <!--    <label for="age">Edit age: </label>-->
+    <!--    <input type="text" th:field="*{age}" id="age" th:value="*{age}"/><br/>-->
+    <!--    <p style="color: red" th:if="${#fields.hasErrors('age')}" th:errors="*{name}">Error</p><br/>-->
+
+    <br/>
+    <label for="age">Select age: </label>
+    <select th:field="*{age}" th:value="*{age}" id="age">
+        <option th:each="i : ${#numbers.sequence(0, 170)}" th:value="${i}" th:text="${i}">
+        </option>
+    </select>
+    <br/>
+
+    <label for="password">Edit password: </label>
+    <input type="password" th:field="*{password}" id="password" value="pass"><br/><br/>
+    <p style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Error</p>
+    <!--    <div style="color: red" th:if="${errorPassEmpty}" th:text="${errorPassEmpty}">Error</div><br/>-->
+
+    <!--    <div th:each="roll : *{getAllRoles()}">-->
+    <!--        <input type="checkbox" th:field="*{actualRoles}" th:value="${roll}" /><label th:text="${roll}">example</label>-->
+    <!--    </div>-->
+
+
+    <p><select th:field="*{roles}" size="4" multiple>
+        <option  th:each="roll : ${rolesAll}" th:value="${roll.getId()}" th:text="${roll.getRole()}">role</option>
+    </select></p>
+    <p>
+
+
+        <input type="submit" value="Go" />
+</form>
+<br/><br/>
+<!--<form th:method="DELETE" th:action="@{/user/{id}(id = ${user.getId()})}"  th:object="${user}">-->
+<!--    <input th:type="submit" value="delete it!">-->
+<!--</form>-->
+
+<br/><br/>
+<a th:href="@{/admin/}">.:Admin panel:.</a>
+
+
+
+
+</body>
+</html>
+
+
+
+<!--</body>-->
+<!--</html>-->

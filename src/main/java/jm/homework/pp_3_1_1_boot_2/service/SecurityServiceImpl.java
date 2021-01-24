@@ -1,5 +1,6 @@
 package jm.homework.pp_3_1_1_boot_2.service;
 
+import jm.homework.pp_3_1_1_boot_2.model.Role;
 import jm.homework.pp_3_1_1_boot_2.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -52,4 +53,10 @@ public class SecurityServiceImpl implements SecurityService {
 
     }
 
+    @Override
+    public boolean preauthorizeFunc(int id, Authentication authentication) {
+        User user = (User)authentication.getPrincipal();
+        boolean role_admin = authentication.getAuthorities().stream().anyMatch(x -> x.getAuthority().equals("ROLE_ADMIN"));
+        return role_admin || user.getId() == id;
+    }
 }

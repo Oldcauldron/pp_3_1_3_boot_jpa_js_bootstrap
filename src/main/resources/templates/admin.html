@@ -3,23 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <title>Admin</title>
-    <style>
-        body { font-size: 16px; }
-        h1 { font-size: 22pt; }
-        p {  font-size: 1.5em; }
-        a {  font-size: 20px; }
-    </style>
+<!--    <style>-->
+<!--        body { font-size: 16px; }-->
+<!--        h1 { font-size: 22pt; }-->
+<!--        p {  font-size: 1.5em; }-->
+<!--        a {  font-size: 20px; }-->
+<!--    </style>-->
 </head>
 <body>
 <h3>ADMIN</h3>
 <a href="/">GO TO INDEX</a><br/><br/>
 <div th:each="user : ${listUsers}">
+    <span th:text="${user.getId()}">id</span>
     <a th:href="@{/user/acc/{id}(id = ${user.getId()})}" th:text="${user.getEmail()}">user</a><br/>
     <span th:text="${user.getName()}">user</span><br/>
-<!--    <a th:href="@{/users/{name}(name = ${user.getEmail()})}" th:text="${user.getEmail()}">user</a><br/>-->
     <a th:href="@{/user/{id}(id = ${user.getId()})}" th:method="get">Edit</a>
+    <form th:method="DELETE" th:action="@{/user/{id}(id = ${user.getId()})}"  th:object="${user}">
+        <input th:type="submit" value="delete it!">
+    </form>
     <br/><br/>
 </div>
 <br/><br/><div th:insert="basement::logout"></div>
+
+
+
 </body>
 </html>

@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -20,6 +21,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserDetailsService userDetailsService;
     private final SuccessUserHandler successUserHandler;
@@ -55,7 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .usernameParameter("j_email")
                 .passwordParameter("j_password")
                 // даем доступ к форме логина всем
-                .failureHandler(authenticationFailureHandler())
+//                .failureHandler(authenticationFailureHandler())
                 .permitAll();
 
 
@@ -76,8 +78,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //страницы аутентификаци доступна всем
                 .antMatchers("/logincustom", "/registration").anonymous()
                 .antMatchers("/").permitAll()
-                .antMatchers("/user/**").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
-                .antMatchers("/admin", "/edit/**", "/delete**").access("hasAnyRole('ROLE_ADMIN')")
+                .antMatchers("/user/acc/**").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+                .antMatchers("/admin/", "/admin", "/user/**").access("hasAnyRole('ROLE_ADMIN')")
                 // защищенные URL
                 .antMatchers("/hello").access("hasAnyRole('ADMIN')")
                 .anyRequest().authenticated();
@@ -95,9 +97,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-    @Bean
-    public AuthenticationFailureHandler authenticationFailureHandler() {
-        return new CustomAuthenticationFailureHandler();
-    }
+//    @Bean
+//    public AuthenticationFailureHandler authenticationFailureHandler() {
+//        return new CustomAuthenticationFailureHandler();
+//    }
 }
 

@@ -1,6 +1,7 @@
 package jm.homework.pp_3_1_1_boot_2.controller;
 
 import jm.homework.pp_3_1_1_boot_2.model.PreparedRoles;
+import jm.homework.pp_3_1_1_boot_2.model.Role;
 import jm.homework.pp_3_1_1_boot_2.model.User;
 import jm.homework.pp_3_1_1_boot_2.service.RoleService;
 import jm.homework.pp_3_1_1_boot_2.service.UserService;
@@ -15,8 +16,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Set;
 
-@Controller
+//@Controller
 @RequestMapping("")
 public class UserController {
 
@@ -24,7 +26,7 @@ public class UserController {
     private final UserService userService;
     private final RoleService roleService;
 
-    @Autowired
+//    @Autowired
     public UserController(@Qualifier("userDetailsServiceImpl")
                           UserDetailsService userDetailsService,
                           UserService userService,
@@ -98,6 +100,54 @@ public class UserController {
         userService.deleteUserById(id);
         return "redirect:/admin";
     }
+
+
+
+
+    @GetMapping(value = "/user/second/{id}")
+    public String editUserFormSecond(@PathVariable("id") long id,
+                               Model model){
+        User user = userService.showById(id);
+
+//        if(!model.containsAttribute("user")){
+//            model.addAttribute("user", user);
+//        }
+        Set<Role> rolesAll = roleService.getAllRoles();
+        model.addAttribute("rolesAll", rolesAll);
+        model.addAttribute("user", user);
+        return "editUserSecond";
+    }
+
+    @PatchMapping(value = "/user/second/{id}")
+    public String getEditUserSecond(@ModelAttribute("user") @Valid User user,
+                              BindingResult bindingResult,
+                              @PathVariable("id") long id,
+                              Model model,
+                              RedirectAttributes redirectAttributes) {
+//        User user = userService.showById(id);
+        boolean err = false;
+
+
+
+
+//        if ((!user.getEmail().equals(preparedRoles.getEmail()))
+//                && userService.isExistingUserByName(preparedRoles.getEmail())) {
+//            redirectAttributes.addFlashAttribute("errorExist", "this email is already exist");
+//            err = true;
+//        }
+//        if (err || bindingResult.hasErrors()) {
+//            preparedRoles.setAllRoles(roleService.getAllRoles());
+//            preparedRoles.setUserRoles(user);
+//            redirectAttributes.addFlashAttribute("preparedRoles", preparedRoles);
+//            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.preparedRoles", bindingResult);
+//            return String.format("redirect:/user/%d", user.getId());
+//        }
+
+//        userService.updateUserOfPreparedRoles(user, preparedRoles);
+        userService.updateUser(user);
+        return String.format("redirect:/user/acc/%d", user.getId());
+    }
+
 
 
 
