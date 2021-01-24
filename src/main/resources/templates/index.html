@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+</head>
+<body>
+<h2>Index page.</h2>
+<h3 th:text="${value}">val</h3>
+
+<div th:each="role : ${roles}">
+    <div th:switch="${role}">
+        <a th:case="'ROLE_ADMIN'" href="/admin">.:Admin panel:.</a><br/>
+<!--        <p th:case="'ROLE_USER'">-->
+        <p th:case="'ROLE_USER'" >email:
+            <a th:href="@{/user/acc/{id}(id = ${user.getId()})}" th:text="${email}" >USER</a>
+<!--            <a th:href="@{/users/{name}(name = ${username})}" th:text="${username}" >USER</a>-->
+        </p>
+        <br/>
+    </div>
+</div>
+
+<br/><a th:if="!${#request.userPrincipal}" href="/logincustom">LOGIN</a>
+<br/><div th:if="${#request.userPrincipal}" th:insert="~{basement::logout}">LOGOUT</div>
+
+<br/><br/><br/>
+<div class="row" th:if="${#request.isUserInRole('ADMIN')}">
+    <p>This will only be displayed if authenticated user has role 'ADMIN'</p>
+</div>
+<div class="row" th:if="${#request.isUserInRole('ROLE_ADMIN')}">
+    <p>This will only be displayed if authenticated user has role 'ROLE_ADMIN'</p>
+</div>
+<div class="row" th:if="${#request.isUserInRole('ROLE_USER')}">
+    <p>This will only be displayed if authenticated user has role 'ROLE_USER'</p>
+</div>
+
+
+
+</body>
+</html>

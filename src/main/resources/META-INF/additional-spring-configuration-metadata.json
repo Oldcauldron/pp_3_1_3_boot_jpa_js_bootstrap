@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "other.value",
+      "type": "java.lang.String",
+      "description": "Some adding value for testing."
+    }
+  ] }

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>custom</title>
+</head>
+<body>
+<div>
+    <p th:if="${error}">Error, invalid login or password</p>
+    <p th:if="${logout}">..You're logged out..</p>
+    <form method="post" action="/logincustom">
+        <input name="j_email" value="email"/>
+        <input th:type="password" name="j_password"/>
+        <input type="submit"/>
+    </form>
+</div>
+<br/><a th:href="@{/registration}" style="color: blue">registration</a>
+<br/><a href="/"><h3>GO TO INDEX</h3></a>
+</body>
+</html>
