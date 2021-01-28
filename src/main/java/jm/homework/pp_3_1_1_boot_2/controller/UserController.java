@@ -7,6 +7,8 @@ import jm.homework.pp_3_1_1_boot_2.service.RoleService;
 import jm.homework.pp_3_1_1_boot_2.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,7 +20,7 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Set;
 
-//@Controller
+@Controller
 @RequestMapping("")
 public class UserController {
 
@@ -26,9 +28,9 @@ public class UserController {
     private final UserService userService;
     private final RoleService roleService;
 
-//    @Autowired
+    @Autowired
     public UserController(@Qualifier("userDetailsServiceImpl")
-                          UserDetailsService userDetailsService,
+                                  UserDetailsService userDetailsService,
                           UserService userService,
                           RoleService roleService) {
         this.userDetailsService = userDetailsService;
@@ -46,6 +48,7 @@ public class UserController {
         return "admin";
     }
 
+    @PreAuthorize("@securityServiceImpl.preauthorizeFunc(#id, authentication)")
     @GetMapping(value = "/user/acc/{id}")
     public String getPersonal(@PathVariable("id") int id, Model model) {
         User user = userService.showById(id);
@@ -53,119 +56,46 @@ public class UserController {
         return "user";
     }
 
-    @GetMapping(value = "/user/{id}")
-    public String editUserForm(@PathVariable("id") long id,
-                               Model model){
-        User user = userService.showById(id);
-
-        if(!model.containsAttribute("preparedRoles")){
-            PreparedRoles preparedRoles = getNewPreparedRole(user);
-            model.addAttribute("preparedRoles", preparedRoles);
-        }
-        model.addAttribute("user", user);
-        return "editUser";
-    }
-
-    @PatchMapping(value = "/user/{id}")
-    public String getEditUser(@ModelAttribute("preparedRoles") @Valid PreparedRoles preparedRoles,
-                              BindingResult bindingResult,
-                              @PathVariable("id") long id,
-                              Model model,
-                              RedirectAttributes redirectAttributes) {
-        User user = userService.showById(id);
-        boolean err = false;
-
-
-        if ((!user.getEmail().equals(preparedRoles.getEmail()))
-                && userService.isExistingUserByName(preparedRoles.getEmail())) {
-            redirectAttributes.addFlashAttribute("errorExist", "this email is already exist");
-            err = true;
-        }
-        if (err || bindingResult.hasErrors()) {
-            preparedRoles.setAllRoles(roleService.getAllRoles());
-            preparedRoles.setUserRoles(user);
-            redirectAttributes.addFlashAttribute("preparedRoles", preparedRoles);
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.preparedRoles", bindingResult);
-            return String.format("redirect:/user/%d", user.getId());
-        }
-
-
-        userService.updateUserOfPreparedRoles(user, preparedRoles);
-        return String.format("redirect:/user/acc/%d", user.getId());
-    }
-
-
     @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE)
     public String deleteUser(@PathVariable("id") long id, Model model) {
         userService.deleteUserById(id);
         return "redirect:/admin";
     }
 
-
-
-
-    @GetMapping(value = "/user/second/{id}")
+    @GetMapping(value = "/user/{id}")
     public String editUserFormSecond(@PathVariable("id") long id,
-                               Model model){
-        User user = userService.showById(id);
-
-//        if(!model.containsAttribute("user")){
-//            model.addAttribute("user", user);
-//        }
-        Set<Role> rolesAll = roleService.getAllRoles();
-        model.addAttribute("rolesAll", rolesAll);
-        model.addAttribute("user", user);
+                                     Model model){
+        if(!model.containsAttribute("user")){
+            User user = userService.showById(id);
+            model.addAttribute("user", user);
+            Set<Role> rolesAll = roleService.getAllRoles();
+            model.addAttribute("rolesAll", rolesAll);
+        }
         return "editUserSecond";
     }
 
-    @PatchMapping(value = "/user/second/{id}")
+    @PatchMapping(value = "/user/{id}")
     public String getEditUserSecond(@ModelAttribute("user") @Valid User user,
-                              BindingResult bindingResult,
-                              @PathVariable("id") long id,
-                              Model model,
-                              RedirectAttributes redirectAttributes) {
-//        User user = userService.showById(id);
+                                    BindingResult bindingResult,
+                                    @PathVariable("id") long id,
+                                    Model model,
+                                    RedirectAttributes redirectAttributes) {
         boolean err = false;
+        User oldUser = userService.showById(id);
 
-
-
-
-//        if ((!user.getEmail().equals(preparedRoles.getEmail()))
-//                && userService.isExistingUserByName(preparedRoles.getEmail())) {
-//            redirectAttributes.addFlashAttribute("errorExist", "this email is already exist");
-//            err = true;
-//        }
-//        if (err || bindingResult.hasErrors()) {
-//            preparedRoles.setAllRoles(roleService.getAllRoles());
-//            preparedRoles.setUserRoles(user);
-//            redirectAttributes.addFlashAttribute("preparedRoles", preparedRoles);
-//            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.preparedRoles", bindingResult);
-//            return String.format("redirect:/user/%d", user.getId());
-//        }
-
-//        userService.updateUserOfPreparedRoles(user, preparedRoles);
+        if ((!oldUser.getEmail().equals(user.getEmail()))
+                && userService.isExistingUserByEmail(user.getEmail())) {
+            redirectAttributes.addFlashAttribute("errorExist", "this email is already exist");
+            err = true;
+        }
+        if (err || bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("user", user);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.user", bindingResult);
+            redirectAttributes.addFlashAttribute("rolesAll", roleService.getAllRoles());
+            return String.format("redirect:/user/%d", user.getId());
+        }
         userService.updateUser(user);
         return String.format("redirect:/user/acc/%d", user.getId());
     }
-
-
-
-
-
-
-
-    private PreparedRoles getNewPreparedRole(User user) {
-        PreparedRoles preparedRoles = new PreparedRoles();
-        preparedRoles.setAllRoles(roleService.getAllRoles());
-        preparedRoles.setUserRoles(user);
-        preparedRoles.setEmail(user.getEmail());
-        preparedRoles.setName(user.getName());
-        preparedRoles.setAge(user.getAge());
-        preparedRoles.setPassword(user.getPassword());
-        return preparedRoles;
-    }
-
-
-
 
 }

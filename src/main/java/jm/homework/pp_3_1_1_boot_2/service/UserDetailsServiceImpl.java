@@ -57,7 +57,9 @@ public class UserDetailsServiceImpl implements UserDetailsService, UserService, 
         Set<Role> defaultRoles = Collections.singleton(getRole("ROLE_USER"));
         String passCrypt = cryptPass(user.getPassword());
         user.setPassword(passCrypt);
-        user.setRoles(defaultRoles);
+        if (user.getRoles().size() == 0) {
+            user.setRoles(defaultRoles);
+        }
         userDao.save(user);
     }
 

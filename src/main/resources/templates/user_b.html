@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <div  th:insert="~{common :: head_css}"></div>
+    <meta charset="UTF-8">
+    <title>User</title>
+</head>
+<body>
+<div th:insert="~{common :: navka}">navBar</div>
+
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-md-2" th:insert="~{common :: left_panel}">left_panel</div>
+
+        <div class="col-md-10">
+            <h1>User panel</h1>
+
+                    <div th:fragment="user_profile">
+                        <div th:if = "${authUser}">
+                            <h2 th:text="${authUser.getEmail()}">email</h2><br/><br/>
+                            <h2 th:text="${authUser.getName()}">name</h2><br/><br/>
+                            <p th:text="${authUser.getId()} + ', email - ' + ${authUser.getEmail()} + ', name - ' + ${authUser.getName()} +  ', age - ' + ${authUser.getAge()} + ', Password - ' + ${authUser.getPassword()}">user</p><br/>
+                            <br/>
+                            <div th:each="role : ${authUser.getAuthorities()}">
+                                <p th:text="${role.getAuthority()}">role</p>
+                            </div>
+                        </div>
+                    </div>
+        </div>
+    </div>
+</div>
+
+<br/>
+<br/>
+<div th:insert="~{common :: footer}"></div>
+</body>
+</html>

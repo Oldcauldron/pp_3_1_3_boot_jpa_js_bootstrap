@@ -1,0 +1,74 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>edit user</title>
+</head>
+<body>
+
+
+<!--<div class="container-fluid" th:fragment="user_edit">-->
+<div class="modal fade" th:fragment="user_edit" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form th:method="PATCH" th:action="@{/user/{id}(id = ${user.getId()})}" th:object="${user}" >
+                    <th:block th:text="${user.getName}">name</th:block>
+                    <label for="email">Edit email: </label>
+                    <input type="text" th:field="*{email}" id="email" th:value="*{email}"/><br/>
+                    <p style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Error</p><br/>
+                    <p style="color: #ff0000" th:if="${errorExist}" th:text="${errorExist}">Error</p><br/>
+                    <!--    <div style="color: red" th:if="${errorNameEmpty}" th:text="${errorNameEmpty}">Error</div><br/>-->
+
+                    <label for="name">Edit name: </label>
+                    <input type="text" th:field="*{name}" id="name" th:value="*{name}"/><br/>
+                    <p style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Error</p><br/>
+                    <br/>
+                    <label for="age">Select age: </label>
+                    <select th:field="*{age}" th:value="*{age}" id="age">
+                        <option th:each="i : ${#numbers.sequence(0, 170)}" th:value="${i}" th:text="${i}">
+                        </option>
+                    </select>
+                    <br/>
+
+                    <label for="password">Edit password: </label>
+                    <input type="password" th:field="*{password}" id="password" value="pass"><br/><br/>
+                    <p style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Error</p>
+                    <!--    <div style="color: red" th:if="${errorPassEmpty}" th:text="${errorPassEmpty}">Error</div><br/>-->
+
+                    <!--    <div th:each="roll : ${rolesAll}">-->
+                    <!--        <input type="checkbox" th:field="*{roles}" th:value="${roll.getId()}" /><label th:text="${roll.getRole()}">example</label>-->
+                    <!--    </div>-->
+
+
+                    <p><select th:field="*{roles}" size="4" multiple>
+                        <option  th:each="roll : ${rolesAll}" th:value="${roll.getId()}" th:text="${roll.getRole()}">role</option>
+                    </select></p>
+                    <p>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!--</div>-->
+</body>
+</html>
+
+
+
+<!--</body>-->
+<!--</html>-->

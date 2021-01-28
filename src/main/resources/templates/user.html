@@ -6,21 +6,26 @@
 </head>
 <body>
 
-<div th:if = "${user}">
-    <h2 th:text="${user.getEmail()}">email</h2><br/><br/>
-    <h2 th:text="${user.getName()}">name</h2><br/><br/>
-    <p th:text="${user.getId()} + ', email - ' + ${user.getEmail()} + ', name - ' + ${user.getName()} +  ', age - ' + ${user.getAge()} + ', Password - ' + ${user.getPassword()}">user</p><br/>
-    <br/>
-    <div th:each="role : ${user.getAuthorities()}">
-        <p th:text="${role.getAuthority()}">role</p>
-    </div>
-<!--    <br/>-->
-<!--    <div th:each="role : ${user.getRoles()}">-->
-<!--        <p th:text="${role.getRole()}">role</p>-->
-<!--    </div>-->
-<!--    + ', getRoles - ' + ${#arrays.toArray(user.getRoles())}-->
-<!--    + ', getRoles - ' + ${#arrays.toStringArray(user.getRoles())}-->
+
+<div th:fragment="user_profile">
+        <div th:if = "${user}">
+            <h2 th:text="${user.getEmail()}">email</h2><br/><br/>
+            <h2 th:text="${user.getName()}">name</h2><br/><br/>
+            <p th:text="${user.getId()} + ', email - ' + ${user.getEmail()} + ', name - ' + ${user.getName()} +  ', age - ' + ${user.getAge()} + ', Password - ' + ${user.getPassword()}">user</p><br/>
+            <br/>
+            <div th:each="role : ${user.getAuthorities()}">
+                <p th:text="${role.getAuthority()}">role</p>
+            </div>
+        <!--    <br/>-->
+        <!--    <div th:each="role : ${user.getRoles()}">-->
+        <!--        <p th:text="${role.getRole()}">role</p>-->
+        <!--    </div>-->
+        <!--    + ', getRoles - ' + ${#arrays.toArray(user.getRoles())}-->
+        <!--    + ', getRoles - ' + ${#arrays.toStringArray(user.getRoles())}-->
+        </div>
 </div>
+
+
 <br/>
 <br/>
 <a href="/">GO TO INDEX</a>

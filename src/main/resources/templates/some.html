@@ -1,17 +1,62 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
-    <meta charset="UTF-8">
-    <title>Some</title>
+    <div  th:insert="~{common :: head_css}"></div>
 </head>
-<body>
-roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
-    if (roles.contains("ROLE_ADMIN")) {
-    httpServletResponse.sendRedirect("/admin");
-    } else if (roles.contains("ROLE_USER")) {
-    httpServletResponse.sendRedirect("/user");
-    } else {
-    httpServletResponse.sendRedirect("/some");
-    }
+<body class="text-center">
+
+<div th:insert="~{common :: navka}">navBar</div>
+
+
+
+<!--------------------------------main container-->
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-md-2" th:insert="~{common :: left_panel}">left_panel</div>
+
+        <div class="col-md-10">
+                    <h1>Admin panel</h1>
+                    <nav>
+                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                            <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">All users</a>
+                            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">New user</a>
+                            <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Other</a>
+                        </div>
+                    </nav>
+                    <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" th:insert="~{common_admin :: admin_panel}">admin_panel</div>
+                        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" th:insert="~{common_regform :: registration_panel}">registration_panel</div>
+                        <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">Other super important information</div>
+                    </div>
+<!--                    <ul class="nav nav-tabs">-->
+<!--                        <li class="nav-item">-->
+<!--                            <a class="nav-link active" th:href="@{/admin}">Admin</a>-->
+<!--                        </li>-->
+<!--                        <li class="nav-item">-->
+<!--                            <a class="nav-link" th:href="@{/registration}">New user</a>-->
+<!--                        </li>-->
+<!--                        <li class="nav-item">-->
+<!--                            <a class="nav-link" href="#!">Other</a>-->
+<!--                        </li>-->
+<!--                    </ul>-->
+
+<!--                    <div class="container-fluid">-->
+<!--                        <h1>three blocks</h1>-->
+<!--                        <div class="row">-->
+<!--                            <div class="col-md-4" style="background-color: #0f6674">left</div>-->
+<!--                            <div class="col-md-4" style="background-color: #1c7430">middle</div>-->
+<!--                            <div class="col-md-4" style="background-color: #6f42c1">right</div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+        </div>
+
+    </div>
+</div>
+<!--------------------------------main container-->
+
+
+<div th:insert="~{common :: footer}"></div>
+
 </body>
 </html>

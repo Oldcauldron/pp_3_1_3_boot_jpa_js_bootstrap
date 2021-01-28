@@ -36,9 +36,9 @@
     <p style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Error</p>
     <!--    <div style="color: red" th:if="${errorPassEmpty}" th:text="${errorPassEmpty}">Error</div><br/>-->
 
-    <!--    <div th:each="roll : *{getAllRoles()}">-->
-    <!--        <input type="checkbox" th:field="*{actualRoles}" th:value="${roll}" /><label th:text="${roll}">example</label>-->
-    <!--    </div>-->
+<!--    <div th:each="roll : ${rolesAll}">-->
+<!--        <input type="checkbox" th:field="*{roles}" th:value="${roll.getId()}" /><label th:text="${roll.getRole()}">example</label>-->
+<!--    </div>-->
 
 
     <p><select th:field="*{roles}" size="4" multiple>

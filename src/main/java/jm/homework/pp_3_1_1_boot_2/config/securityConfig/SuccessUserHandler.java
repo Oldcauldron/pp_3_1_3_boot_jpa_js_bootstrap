@@ -21,11 +21,11 @@ public class SuccessUserHandler implements AuthenticationSuccessHandler {
         Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
 
         if (roles.contains("ROLE_ADMIN")) {
-            httpServletResponse.sendRedirect("/admin");
+            httpServletResponse.sendRedirect("/admin-b");
         } else if (roles.contains("ROLE_USER")) {
             User user = (User) authentication.getPrincipal();
 //            String urlUser = String.format("/user/%s", authentication.getName());
-            String urlUser = String.format("/user/acc/%d", user.getId());
+            String urlUser = String.format("/user-b/%d", user.getId());
             httpServletResponse.sendRedirect(urlUser);
         } else {
             httpServletResponse.sendRedirect("/some");

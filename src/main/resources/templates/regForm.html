@@ -5,37 +5,35 @@
     <title>Registration new user</title>
 </head>
 <body>
-<form th:method="POST" th:action="@{/registration}" th:object="${user}">
 
-    <label for="email">Input email: </label>
-    <input type="text" th:field="*{email}" id="email"/><br/>
-    <div style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Error</div><br/>
-    <div style="color: red" th:if="${errorExist}" th:text="${errorExist}">Error</div><br/>
+<div th:fragment="registration_panel">
+        <form th:method="POST" th:action="@{/registration}" th:object="${user}">
 
-    <label for="name">Input name: </label>
-    <input type="text" th:field="*{name}" id="name"/><br/>
-    <div style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Error</div><br/>
-<!--    <div style="color: red" th:if="${errorExist}" th:text="${errorExist}">Error</div><br/>-->
+            <label for="email">Input email: </label>
+            <input type="text" th:field="*{email}" id="email"/><br/>
+            <div style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Error</div><br/>
+            <div style="color: red" th:if="${errorExist}" th:text="${errorExist}">Error</div><br/>
 
-<!--    <label for="name">Input age: </label>-->
-<!--    <input type="text" th:field="*{age}" id="age"/><br/>-->
-<!--    <div style="color: red" th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Error</div><br/>-->
-    <br/>
-    <label for="age">Select age: </label>
-    <select th:field="*{age}" id="age">
-        <option th:each="i : ${#numbers.sequence(0, 170)}" th:value="${i}" th:text="${i}">
-        </option>
-    </select>
-    <br/>
+            <label for="name">Input name: </label>
+            <input type="text" th:field="*{name}" id="name"/><br/>
+            <div style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Error</div><br/>
+        <!--    <div style="color: red" th:if="${errorExist}" th:text="${errorExist}">Error</div><br/>-->
 
-    <label for="pass">Enter password</label>
-    <input type="text" th:field="*{password}" id="pass" value="pass"/></br>
-    <div style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Error</div>
+            <br/>
+            <label for="age">Select age: </label>
+            <select th:field="*{age}" id="age">
+                <option th:each="i : ${#numbers.sequence(0, 170)}" th:value="${i}" th:text="${i}">
+                </option>
+            </select>
+            <br/>
 
-    <input type="submit" value="register it!"/>
-</form>
-<!--<div th:each="error : ${#fields.allErrors()}">-->
-<!--    <p th:text="error">error</p>-->
-<!--</div>-->
+            <label for="pass">Enter password</label>
+            <input type="password" th:field="*{password}" id="pass" value="pass"/></br>
+            <div style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Error</div>
+
+            <input type="submit" value="register it!"/>
+        </form>
+</div>
+
 </body>
 </html>
