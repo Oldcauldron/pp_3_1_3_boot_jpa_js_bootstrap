@@ -82,7 +82,7 @@
                                                         <!--                                            <select th:field="*{user.roles}" size="4" id="roles" name="roles" multiple class="form-control">-->
                                                         <select th:value="${user.roles}" size="4" id="roles" name="roles" multiple class="form-control">
                                                             <option th:each="roll : ${rolesAll}" th:value="${roll.getId()}"
-                                                                    th:text="${roll.getRole()}">role
+                                                                    th:text="${roll.getRole()}" th:selected="${#lists.contains(user.roles, roll)}">role
                                                             </option>
                                                         </select>
 
