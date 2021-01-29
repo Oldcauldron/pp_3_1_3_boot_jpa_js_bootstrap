@@ -49,7 +49,6 @@
                             Edit
                         </button>
 
-                        <!--                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">-->
                         <div class="modal fade" th:id="*{'exampleModal' + {user.id}}" tabindex="-1" role="dialog"
                              aria-labelledby="exampleModalLabel">
                             <div class="modal-dialog" role="document">
@@ -60,30 +59,42 @@
                                     </div>
                                     <div class="modal-body form-group">
 <!--                                        <form th:method="PATCH" th:action="@{/user-b2/{id}(id = *{id})}" th:object="${user}">-->
-                                        <form th:method="PATCH" th:action="@{/user-b2/{id}(id = *{user.id})}">
+                                        <form th:method="PATCH" th:action="@{/user-b/{id}(id = *{user.id})}">
 
-                                            <input type="hidden" th:value="*{user.id}" class="form-control" th:name="*{user.id}">
+<!--                                            <input type="hidden" th:value="*{user.id}" class="form-control" th:name="*{user.id}">-->
 
                                             <label for="email">Email: </label>
                                             <input type="text" id="email" th:value="${user.email}" name="email" class="form-control"/><br/>
+                                            <p style="color: red" th:if="${emailEmpty}">Email should not be empty</p><br/>
+                                            <p style="color: #ff0000" th:if="${errorExist}" th:text="${errorExist}">Error</p><br/>
 
                                             <label for="name">name: </label>
                                             <input type="text" id="name" th:value="${user.name}" name="name" class="form-control"/><br/>
+<!--   +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  ERRORS-->
+<!--                                            <p style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="${user.name}">Error</p><br/>-->
+                                            <p style="color: red" th:if="${nameEmpty}">Name should not be empty</p><br/>
 
                                             <label for="age">age: </label>
                                             <select th:value="${user.age}" id="age" name="age" class="form-control">
-                                                <option th:value="${user.age}" selected="selected"></option>
                                                 <option th:each="i : ${#numbers.sequence(0, 170)}" th:value="${i}"
-                                                th:text="${i}" th:selected="${user.age} == ${i}">
+                                                th:text="${i}" th:selected="${user.age == i}">
                                                 </option>
                                             </select>
 
-                                            <label for="name">roles: </label>
-                                            <select th:field="*{user.roles}" size="4" multiple class="form-control">
+                                            <label for="roles">roles: </label>
+<!--                                            <select th:field="*{user.roles}" size="4" id="roles" name="roles" multiple class="form-control">-->
+                                            <select th:value="${user.roles}" size="4" id="roles" name="roles" multiple class="form-control">
                                                 <option th:each="roll : ${rolesAll}" th:value="${roll.getId()}"
-                                                th:text="${roll.getRole()}">role
+                                                    th:text="${roll.getRole()}">role
                                                 </option>
                                             </select>
+
+                                            <label for="password">password: </label>
+                                            <input type="password" id="password" name="password" class="form-control"/><br/>
+<!--   +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  ERRORS-->
+<!--                                            <p style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="${user.password}">Error</p>-->
+                                            <p style="color: red" th:if="${passwordEmpty}">Password should not be empty</p>
+
                                             <div class="modal-footer">
                                             <button type="button" class="btn btn-default" data-dismiss="modal">Close
                                             </button>
