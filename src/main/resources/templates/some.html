@@ -1,11 +1,11 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
-    <div  th:insert="~{common :: head_css}"></div>
+    <div  th:insert="~{fragment_page_panels :: head_css}"></div>
 </head>
 <body class="text-center">
 
-<div th:insert="~{common :: navka}">navBar</div>
+<div th:insert="~{fragment_page_panels :: navka}">navBar</div>
 
 
 
@@ -13,7 +13,7 @@
 <div class="container-fluid">
     <div class="row">
 
-        <div class="col-md-2" th:insert="~{common :: left_panel}">left_panel</div>
+        <div class="col-md-2" th:insert="~{fragment_page_panels :: left_panel}">left_panel</div>
 
         <div class="col-md-10">
                     <h1>Admin panel</h1>
@@ -25,8 +25,8 @@
                         </div>
                     </nav>
                     <div class="tab-content" id="nav-tabContent">
-                        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" th:insert="~{common_admin :: admin_panel}">admin_panel</div>
-                        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" th:insert="~{common_regform :: registration_panel}">registration_panel</div>
+                        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" th:insert="~{fragment_tab_admin :: admin_panel}">admin_panel</div>
+                        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" th:insert="~{fragment_tab_new_user :: registration_panel}">registration_panel</div>
                         <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">Other super important information</div>
                     </div>
 <!--                    <ul class="nav nav-tabs">-->
@@ -56,7 +56,7 @@
 <!--------------------------------main container-->
 
 
-<div th:insert="~{common :: footer}"></div>
+<div th:insert="~{fragment_page_panels :: footer}"></div>
 
 </body>
 </html>

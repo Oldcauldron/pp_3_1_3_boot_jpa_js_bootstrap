@@ -1,25 +1,25 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head>
-    <div  th:insert="~{common :: head_css}"></div>
+    <div  th:insert="~{fragment_page_panels :: head_css}"></div>
     <meta charset="UTF-8">
     <title>User</title>
 </head>
 <body>
-<div th:insert="~{common :: navka}">navBar</div>
+<div th:insert="~{fragment_page_panels :: navka}">navBar</div>
 
-<div class="container-fluid">
-    <div class="row">
+<div class="container-fluid" style="height: 1000px">
+    <div class="row" style="height: inherit">
 
-        <div class="col-md-2" th:insert="~{common :: left_panel}">left_panel</div>
+        <div class="col-md-2" th:insert="~{fragment_page_panels :: left_panel}">left_panel</div>
 
-        <div class="col-md-10">
+        <div class="col-md-10 bg-light">
 
-            <div class="container">
+            <div class="container-fluid">
 
                 <div class="row">
                 <div class="col-md-12"><br>
-                    <h1>User information panel</h1><br>
+                    <h1>User information-page</h1><br>
 
                     <div class="card card-warning">
                         <div class="card-header"><h3>About user</h3></div>
@@ -58,6 +58,6 @@
 
 <br/>
 <br/>
-<div th:insert="~{common :: footer}"></div>
+<div th:insert="~{fragment_page_panels :: footer}"></div>
 </body>
 </html>

@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin</title>
+</head>
+<body>
+
+
+
+<div th:fragment="admin_panel">
+
+
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-md-12"><br>
+
+                <div class="card card-warning">
+                    <div class="card-header text-left"><h3>All users</h3></div>
+                    <div class="card-body">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Email</th>
+                                <th>Name</th>
+                                <th>Age</th>
+                                <th>Roles</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="user : ${listUsers}">
+                                <td th:text="${user.getId()}"></td>
+                                <td th:text="${user.getEmail()}"></td>
+                                <td th:text="${user.getName()}"></td>
+                                <td th:text="${user.getAge()}"></td>
+                                <td><th:block th:each="role : ${user.getAuthorities()}" th:text="${role.getRole()} + ', '">role</th:block></td>
+
+                                <td>
+                            <!-- =========================EDIT-->
+                                    <button type="button" class="btn btn-info" data-toggle="modal"
+                                            th:attr="data-target='#exampleModal' + *{user.id} + '', data-object-name='' + *{user}">
+                                        Edit
+                                    </button>
+
+                                    <div class="modal fade" th:id="*{'exampleModal' + {user.id}}" tabindex="-1" role="dialog"
+                                         aria-labelledby="editModalLable">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title" id="editModalLable">Edit user: </h4>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                </div>
+                                                <div class="modal-body form-group">
+                                                    <!--                                        <form th:method="PATCH" th:action="@{/user-b2/{id}(id = *{id})}" th:object="${user}">-->
+                                                    <form th:method="PATCH" th:action="@{/user-b/{id}(id = *{user.id})}">
+
+                                                        <!--                                            <input type="hidden" th:value="*{user.id}" class="form-control" th:name="*{user.id}">-->
+
+                                                        <label for="email">Email: </label>
+                                                        <input type="text" id="email" th:value="${user.email}" name="email" class="form-control"/><br/>
+                                                        <p style="color: red" th:if="${emailEmpty}">Email should not be empty<br/></p>
+                                                        <p style="color: #ff0000" th:if="${errorExist}" th:text="${errorExist}">Error<br/></p>
+
+                                                        <label for="name">name: </label>
+                                                        <input type="text" id="name" th:value="${user.name}" name="name" class="form-control"/><br/>
+                                                        <!--   +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  ERRORS-->
+                                                        <!--                                            <p style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="${user.name}">Error</p><br/>-->
+                                                        <p style="color: red" th:if="${nameEmpty}">Name should not be empty</p><br/>
+
+                                                        <label for="age">age: </label>
+                                                        <select th:value="${user.age}" id="age" name="age" class="form-control">
+                                                            <option th:each="i : ${#numbers.sequence(0, 170)}" th:value="${i}"
+                                                                    th:text="${i}" th:selected="${user.age == i}">
+                                                            </option>
+                                                        </select>
+
+                                                        <label for="roles">roles: </label>
+                                                        <!--                                            <select th:field="*{user.roles}" size="4" id="roles" name="roles" multiple class="form-control">-->
+                                                        <select th:value="${user.roles}" size="4" id="roles" name="roles" multiple class="form-control">
+                                                            <option th:each="roll : ${rolesAll}" th:value="${roll.getId()}"
+                                                                    th:text="${roll.getRole()}">role
+                                                            </option>
+                                                        </select>
+
+                                                        <label for="password">password: </label>
+                                                        <input type="password" id="password" name="password" class="form-control"/><br/>
+                                                        <!--   +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  ERRORS-->
+                                                        <!--                                            <p style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="${user.password}">Error</p>-->
+                                                        <p style="color: red" th:if="${passwordEmpty}">Password should not be empty</p>
+
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close
+                                                            </button>
+                                                            <button type="submit" class="btn btn-primary">submit</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                            <!-- =========================EDIT-->
+                                </td>
+
+                                <td>
+                            <!-- =========================DELETE-->
+                                        <button type="button" class="btn btn-danger btn-primary" data-toggle="modal"
+                                                th:attr="data-target='#deleteModal' + *{user.id} + '', data-object-name='' + *{user}">
+                                            Delete
+                                        </button>
+
+                                        <div class="modal fade" th:id="*{'deleteModal' + {user.id}}" tabindex="-1" role="dialog"
+                                             aria-labelledby="deleteModalLable">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title" id="deleteModalLable">Delete user</h4>
+                                                        <button type="button" class="close text-right" data-dismiss="modal"
+                                                                aria-label="Close"><span aria-hidden="true">x</span></button>
+                                                    </div>
+                                                    <div class="modal-body form-group">
+                                                        <form th:method="DELETE" th:action="@{/user-b/{id}(id = *{id})}" th:object="${user}">
+
+                                                            <label for="name">ID: </label>
+                                                            <input type="text" th:value="*{id}" class="form-control" name="id" disabled>
+
+                                                            <label for="name">Email: </label>
+                                                            <input type="text" id="email" th:value="*{email}" th:name="*{email}"
+                                                                   class="form-control" disabled/><br/>
+
+                                                            <label for="name">Name: </label>
+                                                            <input type="text" id="name" th:value="*{name}" th:name="*{name}"
+                                                                   class="form-control" disabled/><br/>
+
+                                                            <label for="name">Age: </label>
+                                                            <input type="text" id="age" th:value="*{age}" th:name="*{age}"
+                                                                   class="form-control" disabled/><br/>
+
+                                                            <label for="name">Roles: </label>
+                                                            <select multiple class="form-control" disabled>
+                                                                <option th:each="roll : *{roles}" th:value="${roll.getId()}"
+                                                                        th:text="${roll.getRole()}">role
+                                                                </option>
+                                                            </select> <br>
+
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                <button type="submit" class="btn btn-danger btn-primary">Delete</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                            <!-- =========================DELETE-->
+                                </td>
+
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div><br><br>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<!--<div th:fragment="admin_panel2">-->
+<!--    <br/><br/>-->
+<!--    <div class="container-fluid">-->
+<!--        <ul class="list-group list-group-flush">-->
+<!--            <li class="list-group-item active">-->
+<!--                <div class="row row-cols-6" style="font-weight: bold">-->
+<!--                    <div class="col">id</div>-->
+<!--                    <div class="col">email</div>-->
+<!--                    <div class="col">name</div>-->
+<!--                    <div class="col">roles</div>-->
+<!--                    <div class="col">edit</div>-->
+<!--                    <div class="col">delete</div>-->
+<!--                </div>-->
+<!--            </li>-->
+<!--            <li class="list-group-item" th:each="user : ${listUsers}">-->
+<!--                <div class="row row-cols-6">-->
+
+<!--                    <div class="col" th:text="${user.getId()}">id</div>-->
+
+<!--                    <div class="col" th:text="${user.getEmail()}">email</div>-->
+
+<!--                    <div class="col" th:text="${user.getName()}">name</div>-->
+
+<!--                    <div class="col">-->
+<!--                        <span th:each="role : ${user.getRoles()}">-->
+<!--                            <th:block th:text="${role.getRole()}">role</th:block>-->
+<!--                        </span>-->
+<!--                    </div>-->
+
+
+<!--                    <div class="col">-->
+
+<!--                        <button type="button" class="btn btn-primary" data-toggle="modal"-->
+<!--                                th:attr="data-target='#exampleModal' + *{user.id} + '', data-object-name='' + *{user}">-->
+<!--                            Edit-->
+<!--                        </button>-->
+
+<!--                        <div class="modal fade" th:id="*{'exampleModal' + {user.id}}" tabindex="-1" role="dialog"-->
+<!--                             aria-labelledby="exampleModalLabel">-->
+<!--                            <div class="modal-dialog" role="document">-->
+<!--                                <div class="modal-content">-->
+<!--                                    <div class="modal-header">-->
+<!--                                        <h4 class="modal-title" id="exampleModalLabel">Edit user: </h4>-->
+<!--                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
+<!--                                    </div>-->
+<!--                                    <div class="modal-body form-group">-->
+<!--&lt;!&ndash;                                        <form th:method="PATCH" th:action="@{/user-b2/{id}(id = *{id})}" th:object="${user}">&ndash;&gt;-->
+<!--                                        <form th:method="PATCH" th:action="@{/user-b/{id}(id = *{user.id})}">-->
+
+<!--&lt;!&ndash;                                            <input type="hidden" th:value="*{user.id}" class="form-control" th:name="*{user.id}">&ndash;&gt;-->
+
+<!--                                            <label for="email">Email: </label>-->
+<!--                                            <input type="text" id="email" th:value="${user.email}" name="email" class="form-control"/><br/>-->
+<!--                                            <p style="color: red" th:if="${emailEmpty}">Email should not be empty</p><br/>-->
+<!--                                            <p style="color: #ff0000" th:if="${errorExist}" th:text="${errorExist}">Error</p><br/>-->
+
+<!--                                            <label for="name">name: </label>-->
+<!--                                            <input type="text" id="name" th:value="${user.name}" name="name" class="form-control"/><br/>-->
+<!--&lt;!&ndash;   +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  ERRORS&ndash;&gt;-->
+<!--&lt;!&ndash;                                            <p style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="${user.name}">Error</p><br/>&ndash;&gt;-->
+<!--                                            <p style="color: red" th:if="${nameEmpty}">Name should not be empty</p><br/>-->
+
+<!--                                            <label for="age">age: </label>-->
+<!--                                            <select th:value="${user.age}" id="age" name="age" class="form-control">-->
+<!--                                                <option th:each="i : ${#numbers.sequence(0, 170)}" th:value="${i}"-->
+<!--                                                th:text="${i}" th:selected="${user.age == i}">-->
+<!--                                                </option>-->
+<!--                                            </select>-->
+
+<!--                                            <label for="roles">roles: </label>-->
+<!--&lt;!&ndash;                                            <select th:field="*{user.roles}" size="4" id="roles" name="roles" multiple class="form-control">&ndash;&gt;-->
+<!--                                            <select th:value="${user.roles}" size="4" id="roles" name="roles" multiple class="form-control">-->
+<!--                                                <option th:each="roll : ${rolesAll}" th:value="${roll.getId()}"-->
+<!--                                                    th:text="${roll.getRole()}">role-->
+<!--                                                </option>-->
+<!--                                            </select>-->
+
+<!--                                            <label for="password">password: </label>-->
+<!--                                            <input type="password" id="password" name="password" class="form-control"/><br/>-->
+<!--&lt;!&ndash;   +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  ERRORS&ndash;&gt;-->
+<!--&lt;!&ndash;                                            <p style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="${user.password}">Error</p>&ndash;&gt;-->
+<!--                                            <p style="color: red" th:if="${passwordEmpty}">Password should not be empty</p>-->
+
+<!--                                            <div class="modal-footer">-->
+<!--                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close-->
+<!--                                            </button>-->
+<!--                                            <button type="submit" class="btn btn-primary">submit</button>-->
+<!--                                            </div>-->
+<!--                                        </form>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+
+<!--                        &lt;!&ndash;  ____________________ modal window_______________________________________ &ndash;&gt;-->
+<!--                    </div>-->
+
+
+<!--                    &lt;!&ndash;  ____________________ DELETE modal window_______________________________________ &ndash;&gt;-->
+<!--                    <div class="col">-->
+<!--                        <button type="button" class="btn btn-danger btn-primary" data-toggle="modal"-->
+<!--                                th:attr="data-target='#exampleModal2' + *{user.id} + '', data-object-name='' + *{user}">-->
+<!--                            Delete-->
+<!--                        </button>-->
+
+<!--                        <div class="modal fade" th:id="*{'exampleModal2' + {user.id}}" tabindex="-1" role="dialog"-->
+<!--                             aria-labelledby="exampleModalLabel">-->
+<!--                            <div class="modal-dialog" role="document">-->
+<!--                                <div class="modal-content">-->
+<!--                                    <div class="modal-header">-->
+<!--                                        <h4 class="modal-title" id="otherexampleModalLabel">Delete user</h4>-->
+<!--                                        <button type="button" class="close text-right" data-dismiss="modal"-->
+<!--                                                aria-label="Close"><span aria-hidden="true">x</span></button>-->
+<!--                                    </div>-->
+<!--                                    <div class="modal-body form-group">-->
+<!--                                        <form th:method="DELETE" th:action="@{/user-b/{id}(id = *{id})}" th:object="${user}">-->
+
+<!--                                            <label for="name">ID: </label>-->
+<!--                                            <input type="text" th:value="*{id}" class="form-control" name="id" disabled>-->
+
+<!--                                            <label for="name">Email: </label>-->
+<!--                                            <input type="text" id="email" th:value="*{email}" th:name="*{email}"-->
+<!--                                                   class="form-control" disabled/><br/>-->
+
+<!--                                            <label for="name">Name: </label>-->
+<!--                                            <input type="text" id="name" th:value="*{name}" th:name="*{name}"-->
+<!--                                                   class="form-control" disabled/><br/>-->
+
+<!--                                            <label for="name">Age: </label>-->
+<!--                                            <input type="text" id="age" th:value="*{age}" th:name="*{age}"-->
+<!--                                                   class="form-control" disabled/><br/>-->
+
+<!--                                            <label for="name">Roles: </label>-->
+<!--                                            <select multiple class="form-control" disabled>-->
+<!--                                                <option th:each="roll : *{roles}" th:value="${roll.getId()}"-->
+<!--                                                        th:text="${roll.getRole()}">role-->
+<!--                                                </option>-->
+<!--                                            </select> <br>-->
+
+<!--                                            <div class="modal-footer">-->
+<!--                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+<!--                                            <button type="submit" class="btn btn-danger btn-primary">Delete</button>-->
+<!--                                            </div>-->
+<!--                                        </form>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    &lt;!&ndash;  ____________________ DELETE modal window_______________________________________ &ndash;&gt;-->
+
+<!--                </div>-->
+<!--            </li>-->
+<!--        </ul>-->
+<!--    </div>-->
+
+
+<!--</div>-->
+<!--</div>-->
+
+
+<!--<br/><br/><div th:insert="basement::logout"></div>-->
+
+<!--<script>-->
+<!--    $('#exampleModal').on('show.bs.modal', function (event) {-->
+<!--        var button = $(event.relatedTarget) // Button that triggered the modal-->
+<!--        var recipient = button.data('whatever') // Extract info from data-* attributes-->
+<!--        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).-->
+<!--        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.-->
+<!--        var modal = $(this)-->
+<!--        modal.find('.modal-title').text('New message to ' + recipient)-->
+<!--        modal.find('.modal-body input').val(recipient)-->
+<!--    })-->
+<!--</script>-->
+
+</body>
+</html>

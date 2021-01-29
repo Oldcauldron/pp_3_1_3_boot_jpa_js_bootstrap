@@ -77,12 +77,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 //страницы аутентификаци доступна всем
                 .antMatchers("/logincustom", "/registration").anonymous()
-                .antMatchers("/", "/css/**", "/image/**", "/js/**", "/assets/**").permitAll()
-                .antMatchers("/block/**").permitAll()
+                .antMatchers("/", "/css/**", "/image/**", "/js/**").permitAll()
                 .antMatchers("/user/acc/**", "/user-b").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
-                .antMatchers("/admin/", "/admin", "/user/**", "/admin-b", "/registration-b").access("hasAnyRole('ROLE_ADMIN')")
+                .antMatchers("/admin-b", "/registration-b").access("hasAnyRole('ROLE_ADMIN')")
                 // защищенные URL
-                .antMatchers("/hello").access("hasAnyRole('ADMIN')")
                 .anyRequest().authenticated();
     }
 

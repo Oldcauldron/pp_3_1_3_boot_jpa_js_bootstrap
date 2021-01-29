@@ -2,7 +2,7 @@ package jm.homework.pp_3_1_1_boot_2.service;
 
 import jm.homework.pp_3_1_1_boot_2.dao.RoleDao;
 import jm.homework.pp_3_1_1_boot_2.dao.UserDao;
-import jm.homework.pp_3_1_1_boot_2.model.PreparedRoles;
+import jm.homework.pp_3_1_1_boot_2.model.archive.PreparedRoles;
 import jm.homework.pp_3_1_1_boot_2.model.Role;
 import jm.homework.pp_3_1_1_boot_2.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,31 +70,8 @@ public class UserDetailsServiceImpl implements UserDetailsService, UserService, 
     }
 
     @Override
-    public void updateUserOfPreparedRoles(User user, PreparedRoles preparedRoles) {
-        Set<Role> newRolesSet = preparedRoles.getActualRoles()
-                .stream()
-                .map(this::getRole)
-                .collect(Collectors.toSet());
-        user.setRoles(newRolesSet);
-        user.setEmail(preparedRoles.getEmail());
-        user.setPassword(preparedRoles.getPassword());
-        user.setPassword(cryptPass(user.getPassword()));
-        userDao.save(user);
-    }
-
-    @Override
     public boolean isExistingUser(User user) {
         return userDao.existsById(user.getId());
-    }
-
-    @Override
-    public boolean isExistingUserByName(String name) {
-        try {
-            User user = userDao.findByName(name);
-            return isExistingUser(user);
-        } catch (Exception e) {
-            return false;
-        }
     }
 
     @Override
@@ -117,10 +94,6 @@ public class UserDetailsServiceImpl implements UserDetailsService, UserService, 
         userDao.deleteById(id);
     }
 
-    @Override
-    public void deleteUser(User user) {
-        userDao.delete(user);
-    }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

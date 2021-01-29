@@ -1,6 +1,8 @@
-package jm.homework.pp_3_1_1_boot_2.model;
+package jm.homework.pp_3_1_1_boot_2.model.archive;
 
 import jm.homework.pp_3_1_1_boot_2.dao.RoleDao;
+import jm.homework.pp_3_1_1_boot_2.model.Role;
+import jm.homework.pp_3_1_1_boot_2.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -10,7 +12,7 @@ import javax.validation.constraints.NotEmpty;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Component
+//@Component
 public class PreparedRoles {
 
     RoleDao roleDao;

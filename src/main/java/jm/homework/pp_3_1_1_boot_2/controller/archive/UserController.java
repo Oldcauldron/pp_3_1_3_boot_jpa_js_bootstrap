@@ -1,13 +1,11 @@
-package jm.homework.pp_3_1_1_boot_2.controller;
+package jm.homework.pp_3_1_1_boot_2.controller.archive;
 
-import jm.homework.pp_3_1_1_boot_2.model.PreparedRoles;
 import jm.homework.pp_3_1_1_boot_2.model.Role;
 import jm.homework.pp_3_1_1_boot_2.model.User;
 import jm.homework.pp_3_1_1_boot_2.service.RoleService;
 import jm.homework.pp_3_1_1_boot_2.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
@@ -20,8 +18,8 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Set;
 
-@Controller
-@RequestMapping("")
+//@Controller
+//@RequestMapping("")
 public class UserController {
 
     private final UserDetailsService userDetailsService;
@@ -45,7 +43,7 @@ public class UserController {
     public String getAdminPage(Model model) {
         List<User> listUsers = userService.allUsers();
         model.addAttribute("listUsers", listUsers);
-        return "admin";
+        return "/templates/archive/admin.html";
     }
 
     @PreAuthorize("@securityServiceImpl.preauthorizeFunc(#id, authentication)")
@@ -53,7 +51,7 @@ public class UserController {
     public String getPersonal(@PathVariable("id") int id, Model model) {
         User user = userService.showById(id);
         model.addAttribute("user", user);
-        return "user";
+        return "/templates/archive/user.html";
     }
 
     @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE)
@@ -71,7 +69,7 @@ public class UserController {
             Set<Role> rolesAll = roleService.getAllRoles();
             model.addAttribute("rolesAll", rolesAll);
         }
-        return "editUserSecond";
+        return "/templates/archive/editUserSecond.html";
     }
 
     @PatchMapping(value = "/user/{id}")

@@ -1,4 +1,4 @@
-package jm.homework.pp_3_1_1_boot_2.controller;
+package jm.homework.pp_3_1_1_boot_2.controller.archive;
 
 import jm.homework.pp_3_1_1_boot_2.model.User;
 import jm.homework.pp_3_1_1_boot_2.service.RoleService;
@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Controller
+//@Controller
 public class HomeController {
 
     private final UserDetailsService userDetailsService;
