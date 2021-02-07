@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>fragment form</title>
+</head>
+<body>
+
+<form class="userForm" th:fragment="userForm" style="display:none;">
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input type="text" class="form-control" id="email" name="email" placeholder="Email">
+        <div class="invalid-feedback"></div>
+    </div>
+    <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" id="name" name="name" placeholder="name">
+        <div class="invalid-feedback"></div>
+    </div>
+
+    <div class="form-group">
+        <label for="age">Age</label>
+        <select class="form-control" id="age" name="age">
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="roles">Roles</label>
+        <select class="form-control" id="roles" name="roles" multiple>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" id="password">
+        <div class="invalid-feedback"></div>
+    </div>
+</form>
+
+
+</body>
+</html>

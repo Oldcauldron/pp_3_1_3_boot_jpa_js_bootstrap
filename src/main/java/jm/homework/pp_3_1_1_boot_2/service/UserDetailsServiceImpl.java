@@ -2,11 +2,13 @@ package jm.homework.pp_3_1_1_boot_2.service;
 
 import jm.homework.pp_3_1_1_boot_2.dao.RoleDao;
 import jm.homework.pp_3_1_1_boot_2.dao.UserDao;
-import jm.homework.pp_3_1_1_boot_2.model.archive.PreparedRoles;
+import jm.homework.pp_3_1_1_boot_2.exception_handler.NoUserWithSuchIdException;
+import jm.homework.pp_3_1_1_boot_2.exception_handler.UserWithSuchEmailExist;
 import jm.homework.pp_3_1_1_boot_2.model.Role;
 import jm.homework.pp_3_1_1_boot_2.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,7 +20,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -60,12 +61,24 @@ public class UserDetailsServiceImpl implements UserDetailsService, UserService, 
         if (user.getRoles().size() == 0) {
             user.setRoles(defaultRoles);
         }
-        userDao.save(user);
+        try {
+            userDao.save(user);
+        } catch (DataIntegrityViolationException e) {
+//            System.out.println("\n\n\n 11111111111 \n\n\n");
+            throw new UserWithSuchEmailExist("User with such email exist");
+        }
+//        userDao.save(user);
     }
 
     @Override
     public void updateUser(User user) {
         user.setPassword(cryptPass(user.getPassword()));
+//        try {
+//            userDao.save(user);
+//        } catch (Exception e) {
+//            System.out.println("!!!!!!!!!!!!!!!!!! prinstack");
+//            e.printStackTrace();
+//        }
         userDao.save(user);
     }
 
@@ -85,8 +98,21 @@ public class UserDetailsServiceImpl implements UserDetailsService, UserService, 
     }
 
     @Override
+    public boolean isExistingUserById(long id) {
+        try {
+            showById(id);
+            return true;
+        } catch (NoUserWithSuchIdException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
     public User showById(long id) {
-        return userDao.findById(id).orElseThrow(() -> new UsernameNotFoundException("User no found. This exception from UserDetailsServiceImpl - showById"));
+        String message =  String.format("User with id - %d not found. This exception from UserDetailsServiceImpl - showById", id);
+//        return userDao.findById(id).orElseThrow(() -> new UsernameNotFoundException(message));
+        return userDao.findById(id).orElseThrow(() -> new NoUserWithSuchIdException(message));
     }
 
     @Override

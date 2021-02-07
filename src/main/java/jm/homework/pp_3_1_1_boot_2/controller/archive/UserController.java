@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 //@Controller
 //@RequestMapping("")
@@ -92,6 +93,7 @@ public class UserController {
             redirectAttributes.addFlashAttribute("rolesAll", roleService.getAllRoles());
             return String.format("redirect:/user/%d", user.getId());
         }
+
         userService.updateUser(user);
         return String.format("redirect:/user/acc/%d", user.getId());
     }

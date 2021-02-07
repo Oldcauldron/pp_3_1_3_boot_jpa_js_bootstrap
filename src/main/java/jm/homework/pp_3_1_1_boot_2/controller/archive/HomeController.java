@@ -1,47 +1,47 @@
-package jm.homework.pp_3_1_1_boot_2.controller.archive;
-
-import jm.homework.pp_3_1_1_boot_2.model.User;
-import jm.homework.pp_3_1_1_boot_2.service.RoleService;
-import jm.homework.pp_3_1_1_boot_2.service.SecurityService;
-import jm.homework.pp_3_1_1_boot_2.service.UserService;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-//@Controller
-public class HomeController {
-
-    private final UserDetailsService userDetailsService;
-    private final UserService userService;
-    private final RoleService roleService;
-    private final SecurityService securityService;
-
-    @Value("${other.value}")
-    String value;
-
-    public HomeController(@Qualifier("userDetailsServiceImpl")
-                          UserDetailsService userDetailsService,
-                          UserService userService,
-                          RoleService roleService,
-                          SecurityService securityService) {
-        this.userDetailsService = userDetailsService;
-        this.userService = userService;
-        this.roleService = roleService;
-        this.securityService = securityService;
-    }
+//package jm.homework.pp_3_1_1_boot_2.controller.archive;
+//
+//import jm.homework.pp_3_1_1_boot_2.model.User;
+//import jm.homework.pp_3_1_1_boot_2.service.RoleService;
+//import jm.homework.pp_3_1_1_boot_2.service.SecurityService;
+//import jm.homework.pp_3_1_1_boot_2.service.UserService;
+//import org.springframework.beans.factory.annotation.Qualifier;
+//import org.springframework.beans.factory.annotation.Value;
+//import org.springframework.security.core.Authentication;
+//import org.springframework.security.core.GrantedAuthority;
+//import org.springframework.security.core.context.SecurityContextHolder;
+//import org.springframework.security.core.userdetails.UserDetails;
+//import org.springframework.security.core.userdetails.UserDetailsService;
+//import org.springframework.stereotype.Controller;
+//import org.springframework.ui.Model;
+//import org.springframework.validation.BindingResult;
+//import org.springframework.web.bind.annotation.*;
+//
+//import javax.validation.Valid;
+//import java.util.List;
+//import java.util.Set;
+//import java.util.stream.Collectors;
+//
+////@Controller
+//public class HomeController {
+//
+//    private final UserDetailsService userDetailsService;
+//    private final UserService userService;
+//    private final RoleService roleService;
+////    private final SecurityService securityService;
+//
+//    @Value("${other.value}")
+//    String value;
+//
+//    public HomeController(@Qualifier("userDetailsServiceImpl")
+//                          UserDetailsService userDetailsService,
+//                          UserService userService,
+//                          RoleService roleService,
+//                          SecurityService securityService) {
+//        this.userDetailsService = userDetailsService;
+//        this.userService = userService;
+//        this.roleService = roleService;
+//        this.securityService = securityService;
+//    }
 
 //    @GetMapping(value = "/")
 //    public String getHomePage(Model model) {
@@ -172,4 +172,4 @@ public class HomeController {
 //        return "user_b";
 //    }
 
-}
+//}

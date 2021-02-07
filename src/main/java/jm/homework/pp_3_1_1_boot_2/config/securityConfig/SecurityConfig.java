@@ -11,11 +11,13 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 
@@ -77,11 +79,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 //страницы аутентификаци доступна всем
                 .antMatchers("/logincustom", "/registration").anonymous()
-                .antMatchers("/", "/css/**", "/image/**", "/js/**").permitAll()
-                .antMatchers("/user/acc/**", "/user-b").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
-                .antMatchers("/admin-b", "/registration-b").access("hasAnyRole('ROLE_ADMIN')")
+                .antMatchers("/", "/css/**", "/image/**", "/js/**", "/api/**", "/webjars/**").permitAll()
+                .antMatchers("/actuator", "/actuator/**").permitAll()
+                .antMatchers("/main").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+//                .antMatchers("/user/acc/**", "/user-b", "/main").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+//                .antMatchers("/admin-b", "/registration-b").access("hasAnyRole('ROLE_ADMIN')")
                 // защищенные URL
                 .anyRequest().authenticated();
+
     }
 
     @Bean
@@ -100,5 +105,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //    public AuthenticationFailureHandler authenticationFailureHandler() {
 //        return new CustomAuthenticationFailureHandler();
 //    }
+
 }
 

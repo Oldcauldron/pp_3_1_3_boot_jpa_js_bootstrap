@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <link rel="shortcut icon" href="#">
+    <div  th:insert="~{fragment_page_panels :: head_css}"></div>
+</head>
+<body class="text-center">
+
+<div th:insert="~{fragment_page_panels :: navka}">navBar</div>
+
+
+<div class="row">
+    <div class="col-2">
+        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <a class="nav-link" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="false" th:if="${#request.isUserInRole('ROLE_ADMIN')}">Admin</a>
+            <a class="nav-link active" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="true">Profile</a>
+        </div>
+    </div>
+    <div class="col-10">
+        <div class="tab-content" id="v-pills-tabContent">
+            <div class="tab-pane fade" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab" th:insert="~{admin_b :: admin_profile}" th:if="${#request.isUserInRole('ROLE_ADMIN')}">...</div>
+            <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab" th:insert="~{user_b :: user_profile}">...</div>
+        </div>
+    </div>
+</div>
+
+
+<div th:replace="fragment_modal :: defaultModal"></div>
+<div th:replace="fragment_form :: userForm"></div>
+<div th:insert="~{fragment_page_panels :: footer}"></div>
+</body>
+</html>
