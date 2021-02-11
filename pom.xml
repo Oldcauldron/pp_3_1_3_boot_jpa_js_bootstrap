@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>jm.homework</groupId>
-    <artifactId>pp_3_1_1_boot_2</artifactId>
+    <artifactId>pp_3_1_3_boot_js_jpa_bootstrap</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>pp_3_1_1_boot_2</name>
+    <name>pp_3_1_3_boot_js_jpa_bootstrap</name>
     <description>Demo project for Spring Boot</description>
     <properties>
         <java.version>11</java.version>
