@@ -82,8 +82,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "/css/**", "/image/**", "/js/**", "/api/**", "/webjars/**").permitAll()
                 .antMatchers("/actuator", "/actuator/**").permitAll()
                 .antMatchers("/main").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
-//                .antMatchers("/user/acc/**", "/user-b", "/main").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
-//                .antMatchers("/admin-b", "/registration-b").access("hasAnyRole('ROLE_ADMIN')")
                 // защищенные URL
                 .anyRequest().authenticated();
 
@@ -100,11 +98,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
-
-//    @Bean
-//    public AuthenticationFailureHandler authenticationFailureHandler() {
-//        return new CustomAuthenticationFailureHandler();
-//    }
 
 }
 

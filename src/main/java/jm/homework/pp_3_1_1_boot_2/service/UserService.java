@@ -15,7 +15,4 @@ public interface UserService {
     boolean isExistingUserById(long id);
     User showById(long id);
     void deleteUserById(long id);
-//    void deleteUser(User user);
-//    void updateUserOfPreparedRoles(User user, PreparedRoles preparedRoles);
-//    boolean isExistingUserByName(String name);
 }

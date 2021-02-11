@@ -9,8 +9,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalControllerExceptionHandler {
 
-    @Autowired
     UserIncorrectData userIncorrectData;
+
+    @Autowired
+    public GlobalControllerExceptionHandler(UserIncorrectData userIncorrectData) {
+        this.userIncorrectData = userIncorrectData;
+    }
 
     @ExceptionHandler
     public ResponseEntity<UserIncorrectData> handleException(NoUserWithSuchIdException exception) {

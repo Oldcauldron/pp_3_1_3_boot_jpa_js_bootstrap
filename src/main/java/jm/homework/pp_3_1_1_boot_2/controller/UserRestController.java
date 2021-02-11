@@ -4,16 +4,13 @@ import jm.homework.pp_3_1_1_boot_2.exception_handler.NoUserWithSuchIdException;
 import jm.homework.pp_3_1_1_boot_2.exception_handler.UserIncorrectData;
 import jm.homework.pp_3_1_1_boot_2.exception_handler.UserWithSuchEmailExist;
 import jm.homework.pp_3_1_1_boot_2.model.User;
+import jm.homework.pp_3_1_1_boot_2.service.SecurityService;
 import jm.homework.pp_3_1_1_boot_2.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,23 +23,18 @@ import java.util.stream.Collectors;
 public class UserRestController {
 
     private UserService userService;
+    private SecurityService securityService;
 
     @Autowired
-    public void setUserService(UserService userService) {
+    public UserRestController(UserService userService,
+                              SecurityService securityService) {
         this.userService = userService;
+        this.securityService = securityService;
     }
 
     @GetMapping("/user")
     public User apiGetAuthUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Object principal = authentication.getPrincipal();
-        String email;
-        if (principal instanceof UserDetails) {
-            email = ((UserDetails)principal).getUsername();
-        } else {
-            email = principal.toString();
-        }
-        return userService.findByEmail(email);
+        return securityService.getAuthUser();
     }
 
     @GetMapping("/users")
@@ -59,7 +51,7 @@ public class UserRestController {
     public ResponseEntity<UserIncorrectData> apiAddNewUser(@Valid @RequestBody User user,
                                                 BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
-            String error = bindingResult.getFieldErrors().stream().map(x -> x.getDefaultMessage()).collect(Collectors.joining("; "));
+            String error = getErrorsFromBindingResult(bindingResult);
             return new ResponseEntity<>(new UserIncorrectData(error), HttpStatus.BAD_REQUEST);
         }
         userService.addUser(user);
@@ -71,13 +63,12 @@ public class UserRestController {
                               @Valid @RequestBody User user,
                               BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
-            String error = bindingResult.getFieldErrors().stream().map(x -> x.getDefaultMessage()).collect(Collectors.joining("; "));
+            String error = getErrorsFromBindingResult(bindingResult);
             return new ResponseEntity<>(new UserIncorrectData(error), HttpStatus.BAD_REQUEST);
         }
         try {
             userService.addUser(user);
         } catch (DataIntegrityViolationException e) {
-//            System.out.println("\n\n\n 11111111111 \n\n\n");
             throw new UserWithSuchEmailExist("Not updated, user with such email exist");
         }
         return new ResponseEntity<>(HttpStatus.OK);
@@ -94,5 +85,11 @@ public class UserRestController {
         }
     }
 
+    private String getErrorsFromBindingResult(BindingResult bindingResult) {
+        return bindingResult.getFieldErrors()
+                .stream()
+                .map(x -> x.getDefaultMessage())
+                .collect(Collectors.joining("; "));
+    }
 
 }

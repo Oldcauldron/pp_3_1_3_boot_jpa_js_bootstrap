@@ -3,6 +3,7 @@ package jm.homework.pp_3_1_1_boot_2.model;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
+import java.util.List;
 
 // Этот класс реализует интерфейс GrantedAuthority, в котором необходимо переопределить только один метод getAuthority() (возвращает имя роли).
 // Имя роли должно соответствовать шаблону: «ROLE_ИМЯ», например, ROLE_USER.
@@ -28,6 +29,9 @@ public class Role implements GrantedAuthority {
 
     public Role() {
     }
+
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy="roles")
+    private List<User> users;
 
     public Long getId() {
         return id;

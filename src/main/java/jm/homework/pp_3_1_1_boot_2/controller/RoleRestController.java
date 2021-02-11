@@ -13,8 +13,12 @@ import java.util.Set;
 @RequestMapping("api/")
 public class RoleRestController {
 
-    @Autowired
     RoleService roleService;
+
+    @Autowired
+    public RoleRestController(RoleService roleService) {
+        this.roleService = roleService;
+    }
 
     @GetMapping("/roles")
     public Set<Role> getAllRoles() {
